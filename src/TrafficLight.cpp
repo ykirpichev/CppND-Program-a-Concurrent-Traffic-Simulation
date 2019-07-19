@@ -12,7 +12,7 @@ T MessageQueue<T>::receive()
     // The received object should then be returned by the receive function.
     std::unique_lock lk(_mutex);
     _condition.wait(lk, [this](){ return !_queue.empty();});
-    auto entry = _queue.front();
+    auto entry = std::move(_queue.front());
     _queue.pop_front();
     return entry;
 }
